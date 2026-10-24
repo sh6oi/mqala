@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>بوابة ONE RAY لأبحاث التخرج</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary-yellow: #F1C40F;
+            --primary-yellow-hover: #D4AC0D;
+            --main-white: #FFFFFF;
+            --bg-light: #F8F9FA;
+            --main-black: #111111;
+            --text-gray: #555555;
+            --border-light: #E0E0E0;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background-color: var(--bg-light);
+            color: var(--main-black);
+            min-height: 100vh;
+        }
+
+        header {
+            background-color: var(--main-white);
+            text-align: center;
+            padding: 40px 20px;
+            border-bottom: 4px solid var(--primary-yellow);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        header h1 {
+            font-size: 2.8rem;
+            font-weight: 900;
+            color: var(--main-black);
+            margin-bottom: 10px;
+        }
+
+        header h1 span { color: var(--primary-yellow); }
+        header p { color: var(--text-gray); font-size: 1.2rem; font-weight: 500; }
+
+        .main-container { max-width: 1100px; margin: 40px auto; padding: 0 20px; }
+
+        .search-panel {
+            background: var(--main-white);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.08);
+            border: 1px solid var(--border-light);
+            margin-bottom: 40px;
+        }
+
+        /* حقل إدخال الكلمات المفتاحية */
+        .keywords-label {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            display: block;
+            color: var(--main-black);
+        }
+
+        .keyword-input-wrapper {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .keyword-input-wrapper input {
+            flex: 1;
+            padding: 16px 20px;
+            background: var(--bg-light);
+            border: 2px solid var(--border-light);
+            border-radius: 12px;
+            font-size: 1.05rem;
+            font-family: inherit;
+            transition: all 0.3s ease;
+        }
+
+        .keyword-input-wrapper input:focus {
+            outline: none;
+            border-color: var(--primary-yellow);
+            box-shadow: 0 0 0 4px rgba(241, 196, 15, 0.15);
+            background: var(--main-white);
+        }
+
+        .add-keyword-btn {
+            padding: 0 25px;
+            background: var(--primary-yellow);
+            color: var(--main-black);
+            border: 2px solid var(--primary-yellow);
+            border-radius: 12px;
+            font-size: 1.2rem;
+            font-weight: 900;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+
+        .add-keyword-btn:hover {
+            background: var(--main-black);
+            color: var(--primary-yellow);
+            border-color: var(--main-black);
+        }
+
+        .add-keyword-btn:disabled {
+            background: var(--border-light);
+            color: var(--text-gray);
+            border-color: var(--border-light);
+            cursor: not-allowed;
+        }
+
+        /* شرائح الكلمات المفتاحية */
+        .keywords-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            min-height: 50px;
+            padding: 10px;
+            background: var(--bg-light);
+            border-radius: 12px;
+            border: 2px dashed var(--border-light);
+            margin-bottom: 20px;
+            align-items: center;
+        }
+
+        .keywords-chips.empty::before {
+            content: "لم تتم إضافة كلمات مفتاحية بعد... أضف حتى 5 كلمات";
+            color: var(--text-gray);
+            font-size: 0.95rem;
+            padding: 5px 10px;
+        }
+
+        .chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--main-black);
+            color: var(--primary-yellow);
+            padding: 8px 15px;
+            border-radius: 25px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .chip i {
+            cursor: pointer;
+            color: var(--primary-yellow);
+            font-size: 0.85rem;
+            transition: transform 0.2s;
+        }
+
+        .chip i:hover {
+            transform: scale(1.3);
+            color: #e74c3c;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .keywords-counter {
+            text-align: left;
+            font-size: 0.9rem;
+            color: var(--text-gray);
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .filters-row {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px dashed var(--border-light);
+        }
+
+        select {
+            padding: 12px 20px;
+            background: var(--bg-light);
+            border: 2px solid var(--border-light);
+            border-radius: 10px;
+            color: var(--main-black);
+            font-family: inherit;
+            font-weight: 700;
+            cursor: pointer;
+            outline: none;
+        }
+        select:focus { border-color: var(--primary-yellow); }
+
+        .sources-section-title {
+            font-size: 1.4rem;
+            color: var(--main-black);
+            margin-bottom: 20px;
+            font-weight: 900;
+            text-align: center;
+        }
+
+        .sources-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .source-card { position: relative; cursor: pointer; }
+        .source-card input[type="radio"] { display: none; }
+        
+        .card-content {
+            background: var(--main-white);
+            border: 2px solid var(--border-light);
+            border-radius: 12px;
+            padding: 20px 15px;
+            text-align: center;
+            transition: all 0.3s ease;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card-content i { font-size: 1.8rem; color: var(--text-gray); transition: 0.3s; }
+        .card-content span { font-size: 1rem; font-weight: 700; color: var(--main-black); }
+        .source-card:hover .card-content { border-color: var(--main-black); }
+
+        .source-card input[type="radio"]:checked + .card-content {
+            border-color: var(--primary-yellow);
+            background: #FFFCF0;
+            box-shadow: 0 5px 15px rgba(241, 196, 15, 0.2);
+            transform: translateY(-3px);
+        }
+        .source-card input[type="radio"]:checked + .card-content i { color: var(--main-black); }
+        .source-card input[type="radio"]:checked + .card-content span { color: var(--main-black); }
+
+        .btn-search {
+            width: 100%;
+            padding: 20px;
+            background: var(--primary-yellow);
+            color: var(--main-black);
+            border: 2px solid var(--primary-yellow);
+            border-radius: 15px;
+            font-size: 1.4rem;
+            font-weight: 900;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 12px;
+        }
+        .btn-search:hover {
+            background: var(--main-black);
+            color: var(--primary-yellow);
+            border-color: var(--main-black);
+            box-shadow: 0 10px 25px rgba(17, 17, 17, 0.2);
+        }
+
+        .loader { display: none; text-align: center; padding: 40px; color: var(--main-black); }
+        .loader i { font-size: 3rem; animation: spin 1s linear infinite; color: var(--primary-yellow); }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+
+        .results-info {
+            text-align: center;
+            margin-bottom: 20px;
+            font-weight: 700;
+            color: var(--text-gray);
+        }
+
+        .article-card {
+            background: var(--main-white);
+            border: 1px solid var(--border-light);
+            border-right: 6px solid var(--primary-yellow);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.03);
+            transition: all 0.3s ease;
+        }
+        .article-card:hover {
+            transform: translateX(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+            border-color: var(--primary-yellow);
+        }
+
+        .article-title { font-size: 1.5rem; margin-bottom: 15px; line-height: 1.5; }
+        .article-title a { color: var(--main-black); text-decoration: none; transition: color 0.2s; }
+        .article-title a:hover { color: var(--primary-yellow); }
+
+        .article-authors { color: var(--text-gray); font-size: 1.05rem; margin-bottom: 20px; font-weight: 500; }
+
+        .article-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            font-size: 1rem;
+            color: var(--main-black);
+            border-top: 1px solid var(--border-light);
+            padding-top: 20px;
+            align-items: center;
+        }
+
+        .article-meta i { color: var(--primary-yellow); margin-left: 8px; }
+        .badge { background: var(--main-black); color: var(--primary-yellow); padding: 5px 12px; border-radius: 8px; font-size: 0.9rem; font-weight: 700; margin-right: 15px; }
+
+        .read-btn {
+            margin-right: auto;
+            color: var(--main-black);
+            text-decoration: none;
+            font-weight: 700;
+            border: 2px solid var(--main-black);
+            padding: 8px 20px;
+            border-radius: 25px;
+            transition: 0.3s;
+        }
+        .read-btn:hover { background: var(--main-black); color: var(--primary-yellow); }
+
+        .no-results {
+            text-align: center;
+            padding: 40px;
+            background: #fff;
+            border: 2px dashed #ccc;
+            border-radius: 15px;
+        }
+        .no-results i { font-size: 2.5rem; color: var(--text-gray); margin-bottom: 15px; display: block; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>أكاديمية <span>ONE RAY</span></h1>
+        <p>بوابة أبحاث التخرج الطبية والعلمية المعتمدة</p>
+    </header>
+
+    <div class="main-container">
+        <div class="search-panel">
+            
+            <!-- قسم الكلمات المفتاحية -->
+            <label class="keywords-label"><i class="fa-solid fa-key" style="color:var(--primary-yellow);"></i> الكلمات المفتاحية للبحث (حتى 5 كلمات)</label>
+            
+            <div class="keyword-input-wrapper">
+                <input type="text" id="keywordInput" placeholder="اكتب كلمة مفتاحية واضغط Enter أو زر +..." maxlength="50">
+                <button class="add-keyword-btn" id="addKeywordBtn" onclick="addKeyword()">+</button>
+            </div>
+            
+            <div class="keywords-chips empty" id="keywordsChips"></div>
+            <div class="keywords-counter" id="keywordsCounter">0 / 5 كلمات</div>
+
+            <div class="filters-row">
+                <select id="sortSelect">
+                    <option value="relevance">ترتيب: الأكثر صلة</option>
+                    <option value="citations">ترتيب: الأعلى تأثيراً (Citations)</option>
+                    <option value="dateDesc">ترتيب: الأحدث نشراً</option>
+                    <option value="dateAsc">ترتيب: الأقدم نشراً</option>
+                </select>
+            </div>
+
+            <h3 class="sources-section-title">اختر مصدر البحث (ستظهر النتائج في هذه الصفحة)</h3>
+            <div class="sources-grid">
+                <label class="source-card"><input type="radio" name="source" value="src_pubmed" checked><div class="card-content"><i class="fa-solid fa-briefcase-medical"></i><span>PubMed</span></div></label>
+                <label class="source-card"><input type="radio" name="source" value="src_scholar"><div class="card-content"><i class="fa-solid fa-graduation-cap"></i><span>Google Scholar</span></div></label>
+                <label class="source-card"><input type="radio" name="source" value="src_sciencedirect"><div class="card-content"><i class="fa-solid fa-flask-vial"></i><span>ScienceDirect</span></div></label>
+                <label class="source-card"><input type="radio" name="source" value="src_springer"><div class="card-content"><i class="fa-solid fa-leaf"></i><span>SpringerLink</span></div></label>
+                <label class="source-card"><input type="radio" name="source" value="src_cochrane"><div class="card-content"><i class="fa-solid fa-book-medical"></i><span>Cochrane Library</span></div></label>
+                <label class="source-card"><input type="radio" name="source" value="src_pmc"><div class="card-content"><i class="fa-solid fa-file-medical"></i><span>PubMed Central</span></div></label>
+                <label class="source-card"><input type="radio" name="source" value="src_wiley"><div class="card-content"><i class="fa-solid fa-w"></i><span>Wiley Online</span></div></label>
+                <label class="source-card"><input type="radio" name="source" value="src_rsna"><div class="card-content"><i class="fa-solid fa-x-ray"></i><span>Radiology (RSNA)</span></div></label>
+                <label class="source-card"><input type="radio" name="source" value="src_epmc"><div class="card-content"><i class="fa-solid fa-globe-europe"></i><span>Europe PMC</span></div></label>
+                <label class="source-card"><input type="radio" name="source" value="src_doaj"><div class="card-content"><i class="fa-solid fa-door-open"></i><span>DOAJ</span></div></label>
+            </div>
+
+            <button class="btn-search" onclick="executeSearch()">
+                <i class="fa-solid fa-file-import"></i> جلب أبحاث التخرج
+            </button>
+        </div>
+
+        <div class="loader" id="loader"><i class="fa-solid fa-circle-notch"></i><p style="margin-top: 15px; font-weight: bold;">جاري معالجة البيانات وتصفية المقالات...</p></div>
+        <div id="resultsInfo" class="results-info"></div>
+        <div id="resultsContainer"></div>
+    </div>
+
+    <script>
+        let currentData = [];
+        let keywords = [];
+        const MAX_KEYWORDS = 5;
+
+        const keywordInput = document.getElementById('keywordInput');
+        const addKeywordBtn = document.getElementById('addKeywordBtn');
+        const keywordsChips = document.getElementById('keywordsChips');
+        const keywordsCounter = document.getElementById('keywordsCounter');
+
+        // إضافة كلمة عند الضغط على Enter
+        keywordInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                addKeyword();
+            }
+        });
+
+        // دالة إضافة كلمة مفتاحية
+        function addKeyword() {
+            const word = keywordInput.value.trim();
+            
+            if (!word) return;
+            
+            if (keywords.length >= MAX_KEYWORDS) {
+                alert(`عذراً، يمكنك إضافة ${MAX_KEYWORDS} كلمات مفتاحية كحد أقصى.`);
+                return;
+            }
+            
+            // التحقق من عدم التكرار
+            if (keywords.some(k => k.toLowerCase() === word.toLowerCase())) {
+                alert('هذه الكلمة مضافة بالفعل!');
+                keywordInput.value = '';
+                return;
+            }
+            
+            keywords.push(word);
+            keywordInput.value = '';
+            renderKeywords();
+            updateAddButtonState();
+        }
+
+        // حذف كلمة
+        function removeKeyword(index) {
+            keywords.splice(index, 1);
+            renderKeywords();
+            updateAddButtonState();
+        }
+
+        // عرض الكلمات كشرائح
+        function renderKeywords() {
+            if (keywords.length === 0) {
+                keywordsChips.classList.add('empty');
+                keywordsChips.innerHTML = '';
+            } else {
+                keywordsChips.classList.remove('empty');
+                keywordsChips.innerHTML = keywords.map((word, index) => `
+                    <span class="chip">
+                        ${word}
+                        <i class="fa-solid fa-xmark" onclick="removeKeyword(${index})"></i>
+                    </span>
+                `).join('');
+            }
+            keywordsCounter.textContent = `${keywords.length} / ${MAX_KEYWORDS} كلمات`;
+        }
+
+        // تحديث حالة زر الإضافة
+        function updateAddButtonState() {
+            addKeywordBtn.disabled = keywords.length >= MAX_KEYWORDS;
+            keywordInput.disabled = keywords.length >= MAX_KEYWORDS;
+            if (keywords.length >= MAX_KEYWORDS) {
+                keywordInput.placeholder = 'تم الوصول للحد الأقصى (5 كلمات)';
+            } else {
+                keywordInput.placeholder = 'اكتب كلمة مفتاحية واضغط Enter أو زر +...';
+            }
+        }
+
+        // بناء استعلام البحث (جميع الكلمات يجب أن توجد في العنوان)
+        function buildQuery() {
+            // نستخدم TITLE: لكل كلمة مع AND بينها
+            return keywords.map(k => `TITLE:"${k}"`).join(' AND ');
+        }
+
+        // تنفيذ البحث
+        async function executeSearch() {
+            if (keywords.length === 0) {
+                alert('الرجاء إضافة كلمة مفتاحية واحدة على الأقل للبحث.');
+                return;
+            }
+
+            const sourceVal = document.querySelector('input[name="source"]:checked').value;
+            const loader = document.getElementById('loader');
+            const resultsContainer = document.getElementById('resultsContainer');
+            const resultsInfo = document.getElementById('resultsInfo');
+
+            resultsContainer.innerHTML = '';
+            resultsInfo.innerHTML = '';
+            currentData = [];
+            loader.style.display = 'block';
+
+            try {
+                const query = buildQuery();
+                const keywordList = [...keywords];
+
+                switch(sourceVal) {
+                    case 'src_pubmed':
+                        await fetchEPMC(query, 'SRC:MED', 'PubMed'); break;
+                    case 'src_pmc':
+                        await fetchEPMC(query, 'SRC:PMC', 'PubMed Central'); break;
+                    case 'src_epmc':
+                        await fetchEPMC(query, null, 'Europe PMC'); break;
+                    case 'src_cochrane':
+                        await fetchEPMC(query, 'JOURNAL:"Cochrane Database of Systematic Reviews"', 'Cochrane Library'); break;
+                    case 'src_rsna':
+                        await fetchEPMC(query, 'JOURNAL:"Radiology"', 'Radiology (RSNA)'); break;
+                    case 'src_sciencedirect':
+                        await fetchEPMC(query, 'PUBLISHER:"Elsevier"', 'ScienceDirect'); break;
+                    case 'src_springer':
+                        await fetchEPMC(query, 'PUBLISHER:"Springer"', 'SpringerLink'); break;
+                    case 'src_wiley':
+                        await fetchEPMC(query, 'PUBLISHER:"Wiley"', 'Wiley Online Library'); break;
+                    case 'src_scholar':
+                        await fetchGoogleScholar(query, 'Google Scholar'); break;
+                    case 'src_doaj':
+                        await fetchDOAJ(keywordList, 'DOAJ'); break;
+                }
+
+                // فلترة تأكيدية: جميع الكلمات يجب أن توجد في العنوان (للمصادر التي قد لا تدعم TITLE بدقة)
+                if (currentData.length > 0) {
+                    currentData = currentData.filter(article => {
+                        const titleLower = (article.title || '').toLowerCase();
+                        return keywordList.every(kw => titleLower.includes(kw.toLowerCase()));
+                    });
+                }
+
+                renderSortedResults();
+            } catch (error) {
+                resultsContainer.innerHTML = `<div style="text-align:center; padding: 20px; border: 2px solid red; border-radius: 15px; color: red; background: #fff5f5;"><b>حدث خطأ في الاتصال بقاعدة البيانات.</b> يرجى التحقق من اتصالك بالإنترنت والمحاولة مجدداً.</div>`;
+                console.error(error);
+            } finally {
+                loader.style.display = 'none';
+            }
+        }
+
+        // البحث في Europe PMC (TITLE: يضمن البحث في العنوان)
+        async function fetchEPMC(query, filterQuery, displaySourceName) {
+            let searchStr = query;
+            if (filterQuery) searchStr = `(${searchStr}) AND ${filterQuery}`;
+
+            const url = `https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=${encodeURIComponent(searchStr)}&format=json&resultType=core&pageSize=100`;
+            const res = await fetch(url);
+            const data = await res.json();
+            
+            if (data.resultList && data.resultList.result) {
+                currentData = data.resultList.result.map(item => ({
+                    title: item.title || 'بدون عنوان',
+                    authors: item.authorString || 'باحثون غير مدرجين',
+                    date: item.firstPublicationDate || item.pubYear || 'غير محدد',
+                    citations: item.citedByCount || 0,
+                    sourceStr: displaySourceName,
+                    link: item.pmid ? `https://europepmc.org/article/MED/${item.pmid}` : (item.doi ? `https://doi.org/${item.doi}` : '#')
+                }));
+            }
+        }
+
+        // Google Scholar (عبر Europe PMC كبديل مع فلترة إضافية)
+        async function fetchGoogleScholar(query, displaySourceName) {
+            try {
+                const url = `https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=${encodeURIComponent(query)}&format=json&resultType=core&pageSize=100`;
+                const res = await fetch(url);
+                const data = await res.json();
+                
+                if (data.resultList && data.resultList.result) {
+                    currentData = data.resultList.result.map(item => ({
+                        title: item.title || 'بدون عنوان',
+                        authors: item.authorString || 'باحثون غير مدرجين',
+                        date: item.firstPublicationDate || item.pubYear || 'غير محدد',
+                        citations: item.citedByCount || 0,
+                        sourceStr: 'Google Scholar (عبر Europe PMC)',
+                        link: item.pmid ? `https://europepmc.org/article/MED/${item.pmid}` : (item.doi ? `https://doi.org/${item.doi}` : '#')
+                    }));
+                }
+            } catch(e) {
+                throw new Error('تعذر الاتصال بـ Google Scholar. جرب مصدراً آخر.');
+            }
+        }
+
+        // DOAJ مع البحث في العنوان لكل كلمة
+        async function fetchDOAJ(keywordList, displaySourceName) {
+            // بناء استعلام DOAJ: title:(كلمة1) AND title:(كلمة2) ...
+            const queryStr = keywordList.map(k => `title:(${k})`).join(' AND ');
+            const url = `https://doaj.org/api/search/articles/${encodeURIComponent(queryStr)}?pageSize=100`;
+            
+            const res = await fetch(url);
+            const data = await res.json();
+            if (data.results) {
+                currentData = data.results.map(item => ({
+                    title: item.bibjson.title || 'بدون عنوان',
+                    authors: item.bibjson.author ? item.bibjson.author.map(a => a.name).join('، ') : 'غير متوفر',
+                    date: item.bibjson.year || 'غير محدد',
+                    citations: 0,
+                    sourceStr: displaySourceName,
+                    link: item.bibjson.link ? item.bibjson.link[0].url : '#'
+                }));
+            }
+        }
+
+        function renderSortedResults() {
+            const sortVal = document.getElementById('sortSelect').value;
+            const container = document.getElementById('resultsContainer');
+            const info = document.getElementById('resultsInfo');
+
+            currentData.sort((a, b) => {
+                if (sortVal === 'citations') return b.citations - a.citations;
+                if (sortVal === 'dateDesc') {
+                    const dA = new Date(a.date).getTime() || 0;
+                    const dB = new Date(b.date).getTime() || 0;
+                    return dB - dA;
+                }
+                if (sortVal === 'dateAsc') {
+                    const dA = new Date(a.date).getTime() || 0;
+                    const dB = new Date(b.date).getTime() || 0;
+                    return dA - dB;
+                }
+                return 0;
+            });
+
+            info.innerHTML = `تم العثور على <strong>${currentData.length}</strong> مقال يحتوي على جميع الكلمات المفتاحية في العنوان.`;
+
+            if (currentData.length === 0) {
+                container.innerHTML = `
+                    <div class="no-results">
+                        <i class="fa-solid fa-magnifying-glass-minus"></i>
+                        <h3 style="color:var(--main-black); margin-bottom:15px;">لا توجد أبحاث تطابق الشروط</h3>
+                        <p style="font-size:1.1rem; color:var(--text-gray);">لم نعثر على مقالات تحتوي جميع الكلمات المفتاحية في عنوانها ضمن هذا المصدر. حاول تقليل عدد الكلمات أو تغيير المصدر.</p>
+                    </div>`;
+                return;
+            }
+
+            container.innerHTML = currentData.map(article => `
+                <div class="article-card">
+                    <h3 class="article-title"><a href="${article.link}" target="_blank">${article.title}</a></h3>
+                    <div class="article-authors"><i class="fa-solid fa-users"></i> إعداد الباحثين: ${article.authors}</div>
+                    <div class="article-meta">
+                        <span class="badge"><i class="fa-solid fa-bookmark"></i> ${article.sourceStr}</span>
+                        <span><i class="fa-regular fa-calendar-check"></i> تاريخ النشر: <strong>${article.date}</strong></span>
+                        <span><i class="fa-solid fa-quote-right"></i> عدد الاستشهادات: <strong>${article.citations}</strong></span>
+                        
+                        <a href="${article.link}" target="_blank" class="read-btn">
+                            قراءة البحث <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                        </a>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        document.getElementById('sortSelect').addEventListener('change', () => {
+            if(currentData.length > 0) renderSortedResults();
+        });
+    </script>
+</body>
+</html>
